@@ -1,6 +1,7 @@
 # Ralms.EntityFrameworkCore.Oracle
 
-Ralms.EntityFrameworkCore.Oracle is a community developed fork of Provier of Sample Microsoft.EntityFrameworkCore.Oracle.
+Ralms.EntityFrameworkCore.Oracle is a bifurcation developed by the EFCore team, Oracle Provider Sample.
+ [Microsoft.EntityFrameworkCore.Oracle](https://github.com/aspnet/EntityFrameworkCore/tree/dev/samples/OracleProvider).
  
 
 ## Running the tests
