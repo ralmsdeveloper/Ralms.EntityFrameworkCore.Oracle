@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Microsoft sample Oracle database provider for Entity Framework Core.</Description>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <MinClientVersion>3.6</MinClientVersion>
+    <AssemblyName>Ralms.EntityFrameworkCore.Oracle</AssemblyName>
+    <RootNamespace>Ralms.EntityFrameworkCore</RootNamespace>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <PackageTags>$(PackageTags);Oracle</PackageTags> 
+    <IncludeBuildOutput>false</IncludeBuildOutput> 
+    <CodeAnalysisRuleSet>..\EFCore.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+    <NoWarn>1701;1702</NoWarn>
+    <WarningsAsErrors>NU1605;1200</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Shared\*.cs" />
+  </ItemGroup> 
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="2.8.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.0-rtm-30698" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="2.1.0-rtm-30698" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="2.1.0-rtm-30698" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.0-rtm-30698" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.12.0-beta2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\OracleStrings.Designer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>OracleStrings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup> 
+  
+  <ItemGroup>
+    <Compile Update="Properties\OracleStrings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OracleStrings.Designer.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\OracleStrings.resx">
+      <CustomToolNamespace>Microsoft.EntityFrameworkCore.Oracle.Internal</CustomToolNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,76 @@
+/* This project came from a fork of: https://github.com/aspnet/EntityFrameworkCore
+ * Copyright (c) .NET Foundation. All rights reserved.
+ * Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+ * 
+ *          Copyright (c)  2018 Rafael Almeida (ralms@ralms.net)
+ *
+ *                    Ralms.EntityFrameworkCore.Oracle
+ *
+ * THIS MATERIAL IS PROVIDED AS IS, WITH ABSOLUTELY NO WARRANTY EXPRESSED
+ * OR IMPLIED.  ANY USE IS AT YOUR OWN RISK.
+ *
+ * Permission is hereby granted to use or copy this program
+ * for any purpose,  provided the above notices are retained on all copies.
+ * Permission to modify the code and to distribute modified code is granted,
+ * provided the above notices are retained, and a notice that the code was
+ * modified is included with the above copyright notice.
+ *
+ */
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using Microsoft.EntityFrameworkCore.Query.Expressions;
+using Microsoft.EntityFrameworkCore.Query.ExpressionTranslators;
+
+namespace Ralms.EntityFrameworkCore.Oracle.Query.ExpressionTranslators.Internal
+{
+    public class OracleConvertTranslator : IMethodCallTranslator
+    {
+        private static readonly Dictionary<string, string> _typeMapping = new Dictionary<string, string>
+        {
+            [nameof(Convert.ToByte)] = "NUMBER(3)",
+            [nameof(Convert.ToDecimal)] = "NUMBER(29,4)",
+            [nameof(Convert.ToDouble)] = "NUMBER",
+            [nameof(Convert.ToInt16)] = "NUMBER(6)",
+            [nameof(Convert.ToInt32)] = "NUMBER(10)",
+            [nameof(Convert.ToInt64)] = "NUMBER(19)",
+            [nameof(Convert.ToString)] = "NVARCHAR2(2000)"
+        };
+
+        private static readonly List<Type> _supportedTypes = new List<Type>
+        {
+            typeof(bool),
+            typeof(byte),
+            typeof(decimal),
+            typeof(double),
+            typeof(float),
+            typeof(int),
+            typeof(long),
+            typeof(short),
+            typeof(string)
+        };
+
+        private static readonly IEnumerable<MethodInfo> _supportedMethods
+            = _typeMapping.Keys
+                .SelectMany(
+                    t => typeof(Convert).GetTypeInfo().GetDeclaredMethods(t)
+                        .Where(
+                            m => m.GetParameters().Length == 1
+                                 && _supportedTypes.Contains(m.GetParameters().First().ParameterType)));
+
+        public virtual Expression Translate(MethodCallExpression methodCallExpression)
+            => _supportedMethods.Contains(methodCallExpression.Method)
+                ? new SqlFunctionExpression(
+                    "CAST",
+                    methodCallExpression.Type,
+                    new[]
+                    {
+                        methodCallExpression.Arguments[0],
+                        new SqlFragmentExpression(_typeMapping[methodCallExpression.Method.Name])
+                    })
+                : null;
+    }
+}
