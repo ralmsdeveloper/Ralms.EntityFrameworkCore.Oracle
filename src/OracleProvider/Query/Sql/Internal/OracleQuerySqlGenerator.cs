@@ -129,23 +129,27 @@ namespace Ralms.EntityFrameworkCore.Oracle.Query.Sql.Internal
             if (!(orderingExpression.NodeType == ExpressionType.Constant
                     || orderingExpression.NodeType == ExpressionType.Parameter))
             {
-                if (orderingExpression.Type == typeof(string))
-                {
-                    Sql.Append("NLSSORT(");
-
-                    base.GenerateOrdering(ordering);
-
-                    Sql.Append(", 'NLS_SORT=BINARY')");
+                if (orderingExpression.Type == typeof(string)
+                    && (orderingExpression as SqlFunctionExpression)?.FunctionName != "NLSSORT")
+                { 
+                   ordering.Expression = new SqlFunctionExpression(
+                        "NLSSORT",
+                        typeof(string),
+                        new[]
+                        {
+                            orderingExpression is AliasExpression aliasExpression
+                            ? new SqlFragmentExpression(SqlGenerator.DelimitIdentifier(aliasExpression.Alias))
+                            : orderingExpression,
+                            new SqlFragmentExpression("'NLS_SORT=BINARY'")
+                        }); ;
                 }
-                else
-                {
-                    base.GenerateOrdering(ordering);
-                }
+
+                base.GenerateOrdering(ordering);
 
                 if (ordering.OrderingDirection == OrderingDirection.Asc)
                 {
                     Sql.Append(" NULLS FIRST");
-                }
+                } 
             }
         }
 
