@@ -131,8 +131,8 @@ namespace Ralms.EntityFrameworkCore.Oracle.Query.Sql.Internal
             {
                 if (orderingExpression.Type == typeof(string)
                     && (orderingExpression as SqlFunctionExpression)?.FunctionName != "NLSSORT")
-                { 
-                   ordering.Expression = new SqlFunctionExpression(
+                {
+                    ordering.Expression = new SqlFunctionExpression(
                         "NLSSORT",
                         typeof(string),
                         new[]
@@ -141,7 +141,7 @@ namespace Ralms.EntityFrameworkCore.Oracle.Query.Sql.Internal
                             ? new SqlFragmentExpression(SqlGenerator.DelimitIdentifier(aliasExpression.Alias))
                             : orderingExpression,
                             new SqlFragmentExpression("'NLS_SORT=BINARY'")
-                        }); ;
+                        });
                 }
 
                 base.GenerateOrdering(ordering);
@@ -149,7 +149,7 @@ namespace Ralms.EntityFrameworkCore.Oracle.Query.Sql.Internal
                 if (ordering.OrderingDirection == OrderingDirection.Asc)
                 {
                     Sql.Append(" NULLS FIRST");
-                } 
+                }
             }
         }
 
