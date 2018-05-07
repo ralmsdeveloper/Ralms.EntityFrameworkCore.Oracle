@@ -142,6 +142,7 @@ namespace Microsoft.EntityFrameworkCore.Query
                 Assert.Equal(46, actual.Length);
 
                 AssertSql(
+                    "ALTER SESSION SET NLS_SORT='BINARY'",
                     @":city='London' (Nullable = false)
 
 SELECT ""o"".""OrderID"", ""o"".""CustomerID"", ""o"".""EmployeeID"", ""o"".""OrderDate""
@@ -174,6 +175,7 @@ WHERE ""o"".""CustomerID"" IN (
                 Assert.Equal(46, actual.Length);
 
                 AssertSql(
+                    "ALTER SESSION SET NLS_SORT='BINARY'",
                     @":p0='London' (Nullable = false)
 
 SELECT ""o"".""OrderID"", ""o"".""CustomerID"", ""o"".""EmployeeID"", ""o"".""OrderDate""
@@ -206,6 +208,7 @@ WHERE ""o"".""CustomerID"" IN (
                 Assert.Equal(46, actual.Length);
 
                 AssertSql(
+                    "ALTER SESSION SET NLS_SORT='BINARY'",
                     @":city='London' (Nullable = false)
 
 SELECT ""o"".""OrderID"", ""o"".""CustomerID"", ""o"".""EmployeeID"", ""o"".""OrderDate""
@@ -256,6 +259,7 @@ WHERE ""o"".""CustomerID"" IN (
                 Assert.Equal(26, actual.Length);
 
                 AssertSql(
+                    "ALTER SESSION SET NLS_SORT='BINARY'",
                     @":title='Sales Representative' (Nullable = false)
 
 SELECT ""o"".""OrderID"", ""o"".""CustomerID"", ""o"".""EmployeeID"", ""o"".""OrderDate""
@@ -267,6 +271,7 @@ WHERE ""o"".""CustomerID"" IN (
     ) ""c""
 )",
                     //
+                    "ALTER SESSION SET NLS_SORT='BINARY'",
                     @":city='London' (Nullable = false)
 
 SELECT ""o"".""OrderID"", ""o"".""CustomerID"", ""o"".""EmployeeID"", ""o"".""OrderDate""

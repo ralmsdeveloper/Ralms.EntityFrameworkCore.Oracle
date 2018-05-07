@@ -239,6 +239,11 @@ namespace Microsoft.EntityFrameworkCore.TestUtilities
         public override void OpenConnection()
         {
             Connection.Open();
+            using (var command = Connection.CreateCommand())
+            {
+                command.CommandText = "ALTER SESSION SET NLS_SORT='BINARY'";
+                command.ExecuteNonQuery();
+            }
         }
 
         public override Task OpenConnectionAsync()

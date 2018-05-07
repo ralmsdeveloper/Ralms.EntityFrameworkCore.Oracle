@@ -18,6 +18,8 @@
  */
 
 using System.Data.Common;
+using System.Threading;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -27,13 +29,44 @@ namespace Ralms.EntityFrameworkCore.Oracle.Storage.Internal
 {
     public class OracleRelationalConnection : RelationalConnection, IOracleConnection
     {
+        private readonly IRawSqlCommandBuilder _rawSqlCommandBuilder;
         public const string EFPDBAdminUser = "ef_pdb_admin";
 
         internal const int DefaultMasterConnectionCommandTimeout = 60;
 
-        public OracleRelationalConnection([NotNull] RelationalConnectionDependencies dependencies)
+        public OracleRelationalConnection(
+            [NotNull] RelationalConnectionDependencies dependencies,
+            [NotNull] IRawSqlCommandBuilder rawSqlCommandBuilder)
             : base(dependencies)
         {
+            _rawSqlCommandBuilder = rawSqlCommandBuilder;
+        }
+
+        public override bool Open(bool errorsExpected = false)
+        {
+            if (base.Open(errorsExpected))
+            {
+                EnableNSLSort();
+                return true;
+            }
+
+            return false;
+        }
+
+        public override async Task<bool> OpenAsync(CancellationToken cancellationToken, bool errorsExpected = false)
+        {
+            if (await base.OpenAsync(cancellationToken, errorsExpected))
+            {
+                EnableNSLSort();
+                return true;
+            }
+
+            return false;
+        }
+
+        private void EnableNSLSort()
+        {
+            _rawSqlCommandBuilder.Build("ALTER SESSION SET NLS_SORT='BINARY'").ExecuteNonQuery(this); 
         }
 
         protected override DbConnection CreateDbConnection() => new OracleConnection(ConnectionString);
@@ -55,7 +88,7 @@ namespace Ralms.EntityFrameworkCore.Oracle.Storage.Internal
                     b => b.CommandTimeout(CommandTimeout ?? DefaultMasterConnectionCommandTimeout))
                 .Options;
 
-            return new OracleRelationalConnection(Dependencies.With(contextOptions));
+            return new OracleRelationalConnection(Dependencies.With(contextOptions), _rawSqlCommandBuilder);
         }
     }
 }
