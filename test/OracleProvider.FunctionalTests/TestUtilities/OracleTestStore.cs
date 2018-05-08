@@ -241,7 +241,7 @@ namespace Microsoft.EntityFrameworkCore.TestUtilities
             Connection.Open();
             using (var command = Connection.CreateCommand())
             {
-                command.CommandText = "ALTER SESSION SET NLS_SORT='BINARY'";
+                command.CommandText = "ALTER SESSION SET NLS_SORT='BINARY_CI'";
                 command.ExecuteNonQuery();
             }
         }

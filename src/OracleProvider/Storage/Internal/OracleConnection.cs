@@ -66,7 +66,7 @@ namespace Ralms.EntityFrameworkCore.Oracle.Storage.Internal
 
         private void EnableNSLSort()
         {
-            _rawSqlCommandBuilder.Build("ALTER SESSION SET NLS_SORT='BINARY'").ExecuteNonQuery(this); 
+            _rawSqlCommandBuilder.Build("ALTER SESSION SET NLS_SORT='BINARY_CI'").ExecuteNonQuery(this); 
         }
 
         protected override DbConnection CreateDbConnection() => new OracleConnection(ConnectionString);
