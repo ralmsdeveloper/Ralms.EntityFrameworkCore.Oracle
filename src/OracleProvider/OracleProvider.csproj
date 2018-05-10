@@ -9,7 +9,9 @@
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <PackageTags>$(PackageTags);Oracle</PackageTags> 
     <IncludeBuildOutput>false</IncludeBuildOutput> 
-    <CodeAnalysisRuleSet>..\EFCore.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\EFCore.ruleset</CodeAnalysisRuleSet> 
+    <Version>2.1-rc1</Version> 
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

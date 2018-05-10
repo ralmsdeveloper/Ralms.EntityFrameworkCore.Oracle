@@ -29,6 +29,7 @@ namespace Ralms.EntityFrameworkCore.Oracle.Query.ExpressionTranslators.Internal
             new OracleContainsOptimizedTranslator(),
             new OracleConvertTranslator(),
             new OracleDateAddTranslator(),
+            new OracleDateDiffTranslator(),
             new OracleEndsWithOptimizedTranslator(),
             new OracleMathTranslator(),
             new OracleNewGuidTranslator(),
