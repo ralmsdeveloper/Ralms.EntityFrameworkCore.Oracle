@@ -1,3 +1,5 @@
+
+![Oracle logo](http://ralms.net/assets/images/oracletopo.jpg)
 # Ralms.EntityFrameworkCore.Oracle
 
 Ralms.EntityFrameworkCore.Oracle is a bifurcation developed by the EFCore team, Oracle Provider Sample.
