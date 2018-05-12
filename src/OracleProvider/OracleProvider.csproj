@@ -1,17 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>Microsoft sample Oracle database provider for Entity Framework Core.</Description>
+    <Description>Ralms.EntityFrameworkCore.Oracle is an ORM, created at the top of the ODP.NET for .Net Core. It allows you to use Entity Framework Core 2.X</Description>
     <TargetFramework>netstandard2.0</TargetFramework>
     <MinClientVersion>3.6</MinClientVersion>
     <AssemblyName>Ralms.EntityFrameworkCore.Oracle</AssemblyName>
     <RootNamespace>Ralms.EntityFrameworkCore</RootNamespace>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
-    <PackageTags>$(PackageTags);Oracle</PackageTags> 
+    <PackageTags>EntityFrameworkCore Oralce;Provider Oralce;Oracle;RalmsDeveloper</PackageTags> 
     <IncludeBuildOutput>false</IncludeBuildOutput> 
     <CodeAnalysisRuleSet>..\EFCore.ruleset</CodeAnalysisRuleSet> 
-    <Version>2.1-rc1</Version> 
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>2.1-RC1</Version> 
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild> 
+    <PackageIconUrl>http://ralms.net/assets/images/logooracle.png</PackageIconUrl> 
+    <PackageProjectUrl>https://github.com/ralmsdeveloper/Ralms.EntityFrameworkCore.Oracle</PackageProjectUrl> 
+    <RepositoryUrl>https://github.com/ralmsdeveloper/Ralms.EntityFrameworkCore.Oracle</RepositoryUrl> 
+    <RepositoryType>git</RepositoryType> 
+    <PackageReleaseNotes>Oracle Database Provider for the Entity Framework Core.</PackageReleaseNotes> 
+    <Copyright>Rafael Almeida</Copyright> 
+    <Authors>Rafael Almeida</Authors> 
+    <Company>Ralms.net - ralms@ralms.net</Company>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
