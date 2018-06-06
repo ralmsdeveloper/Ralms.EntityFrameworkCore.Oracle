@@ -19,7 +19,9 @@
     <PackageReleaseNotes>Oracle Database Provider for the Entity Framework Core.</PackageReleaseNotes> 
     <Copyright>Rafael Almeida</Copyright> 
     <Authors>Rafael Almeida</Authors> 
-    <Company>Ralms.net - ralms@ralms.net</Company>
+    <Company>Ralms.net - ralms@ralms.net</Company> 
+    <SignAssembly>true</SignAssembly> 
+    <AssemblyOriginatorKeyFile>Ralms.EntityFrameworkCore.Oracle.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -37,11 +39,11 @@
   </ItemGroup> 
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="2.8.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.0-rtm-30698" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="2.1.0-rtm-30698" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="2.1.0-rtm-30698" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.0-rtm-30698" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="2.8.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="2.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="2.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.0" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.12.0-beta2" />
   </ItemGroup>
 

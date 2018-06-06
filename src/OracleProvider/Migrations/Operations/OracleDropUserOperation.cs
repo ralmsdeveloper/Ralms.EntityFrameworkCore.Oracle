@@ -24,5 +24,6 @@ namespace Microsoft.EntityFrameworkCore.Migrations.Operations
     public class OracleDropUserOperation : MigrationOperation
     {
         public virtual string UserName { get; [param: NotNull] set; }
+        public virtual string Password { get; [param: NotNull] set; }
     }
 }

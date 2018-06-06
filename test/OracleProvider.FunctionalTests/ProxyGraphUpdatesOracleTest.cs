@@ -29,8 +29,7 @@ namespace Microsoft.EntityFrameworkCore
             }
         }
 
-        // #11554
-        private class LazyLoading : ProxyGraphUpdatesOracleTestBase<LazyLoading.ProxyGraphUpdatesWithLazyLoadingOracleFixture>
+        public class LazyLoading : ProxyGraphUpdatesOracleTestBase<LazyLoading.ProxyGraphUpdatesWithLazyLoadingOracleFixture>
         {
             public LazyLoading(ProxyGraphUpdatesWithLazyLoadingOracleFixture fixture)
                 : base(fixture)
@@ -39,7 +38,7 @@ namespace Microsoft.EntityFrameworkCore
 
             public class ProxyGraphUpdatesWithLazyLoadingOracleFixture : ProxyGraphUpdatesOracleFixtureBase
             {
-                protected override string StoreName { get; } = "ProxyGraphLazyLoadingUpdatesTest";
+                protected override string StoreName { get; } = "ProxyGraphLazyLoadingUpdates";
 
                 public override DbContextOptionsBuilder AddOptions(DbContextOptionsBuilder builder)
                     => base.AddOptions(builder.UseLazyLoadingProxies());

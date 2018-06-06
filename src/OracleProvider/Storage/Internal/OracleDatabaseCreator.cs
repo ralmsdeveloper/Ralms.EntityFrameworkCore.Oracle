@@ -86,7 +86,8 @@ namespace Ralms.EntityFrameworkCore.Oracle.Storage.Internal
                 {
                     new OracleCreateUserOperation
                     {
-                        UserName = builder.UserID
+                        UserName = builder.UserID,
+                        Password = builder.Password
                     }
                 });
         }
@@ -189,7 +190,8 @@ namespace Ralms.EntityFrameworkCore.Oracle.Storage.Internal
 
         private IEnumerable<MigrationCommand> CreateDropCommands()
         {
-            var userName = new OracleConnectionStringBuilder(_connection.DbConnection.ConnectionString).UserID;
+            var infoConnection = new OracleConnectionStringBuilder(_connection.DbConnection.ConnectionString);
+            var userName = infoConnection.UserID;
 
             if (string.IsNullOrEmpty(userName))
             {
@@ -198,7 +200,11 @@ namespace Ralms.EntityFrameworkCore.Oracle.Storage.Internal
 
             var operations = new MigrationOperation[]
             {
-                new OracleDropUserOperation { UserName = userName }
+                new OracleDropUserOperation
+                {
+                    UserName = userName,
+                    Password = infoConnection.Password
+                }
             };
 
             var masterCommands = Dependencies.MigrationsSqlGenerator.Generate(operations);

@@ -17,24 +17,22 @@
  *
  */
 
-using System;
-using System.Linq;
-using System.Text;
-using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using Ralms.EntityFrameworkCore.Oracle.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.EntityFrameworkCore.Utilities;
+using Ralms.EntityFrameworkCore.Oracle.Metadata.Internal;
+using System;
+using System.Linq;
+using System.Text;
 
 namespace Microsoft.EntityFrameworkCore.Migrations
 {
     public class OracleMigrationsSqlGenerator : MigrationsSqlGenerator
     {
         public OracleMigrationsSqlGenerator(
-            [NotNull] MigrationsSqlGeneratorDependencies dependencies,
-            [NotNull] IMigrationsAnnotationProvider migrationsAnnotations)
+            MigrationsSqlGeneratorDependencies dependencies,
+            IMigrationsAnnotationProvider migrationsAnnotations)
             : base(dependencies)
         {
         }
@@ -60,9 +58,6 @@ namespace Microsoft.EntityFrameworkCore.Migrations
 
         protected override void Generate(MigrationOperation operation, IModel model, MigrationCommandListBuilder builder)
         {
-            Check.NotNull(operation, nameof(operation));
-            Check.NotNull(builder, nameof(builder));
-
             if (operation is OracleCreateUserOperation createDatabaseOperation)
             {
                 Generate(createDatabaseOperation, model, builder);
@@ -82,9 +77,6 @@ namespace Microsoft.EntityFrameworkCore.Migrations
             IModel model,
             MigrationCommandListBuilder builder)
         {
-            Check.NotNull(operation, nameof(operation));
-            Check.NotNull(builder, nameof(builder));
-
             var property = FindProperty(model, operation.Schema, operation.Table, operation.Name);
 
             if (operation.ComputedColumnSql != null)
@@ -191,9 +183,6 @@ namespace Microsoft.EntityFrameworkCore.Migrations
             AlterColumnOperation operation,
             MigrationCommandListBuilder builder)
         {
-            Check.NotNull(operation, nameof(operation));
-            Check.NotNull(builder, nameof(builder));
-
             var commandText = $@"
 DECLARE
    v_Count INTEGER;
@@ -216,9 +205,6 @@ END;";
             IModel model,
             MigrationCommandListBuilder builder)
         {
-            Check.NotNull(operation, nameof(operation));
-            Check.NotNull(builder, nameof(builder));
-
             if (operation.NewName != null)
             {
                 builder
@@ -241,11 +227,6 @@ END;";
             IModel model,
             MigrationCommandListBuilder builder)
         {
-            Check.NotEmpty(name, nameof(name));
-            Check.NotNull(increment, nameof(increment));
-            Check.NotNull(cycle, nameof(cycle));
-            Check.NotNull(builder, nameof(builder));
-
             var intTypeMapping = Dependencies.TypeMappingSource.GetMapping(typeof(int));
             var longTypeMapping = Dependencies.TypeMappingSource.GetMapping(typeof(long));
 
@@ -283,10 +264,7 @@ END;";
             IModel model,
             MigrationCommandListBuilder builder)
         {
-            Check.NotNull(operation, nameof(operation));
-            Check.NotNull(builder, nameof(builder));
-
-            if (operation.NewName != null && operation.NewName != operation.Name)
+            if (operation.NewName != null)
             {
                 builder
                     .Append("RENAME ")
@@ -302,10 +280,7 @@ END;";
             IModel model,
             MigrationCommandListBuilder builder)
         {
-            Check.NotNull(operation, nameof(operation));
-            Check.NotNull(builder, nameof(builder));
-
-            if (operation.NewName != null && operation.NewName != operation.Name)
+            if (operation.NewName != null)
             {
                 builder
                    .Append("ALTER TABLE ")
@@ -313,6 +288,16 @@ END;";
                    .Append(" RENAME TO ")
                    .Append(Dependencies.SqlGenerationHelper.DelimitIdentifier(operation.NewName))
                    .EndCommand();
+            }
+
+            if (operation.NewSchema != null)
+            {
+                builder
+                    .Append("RENAME ")
+                    .Append(operation.NewSchema)
+                    .Append(" TO ")
+                    .Append(operation.Schema)
+                    .EndCommand();
             }
         }
 
@@ -328,54 +313,25 @@ END;";
                 .EndCommand();
         }
 
-        protected override void Generate(EnsureSchemaOperation operation, IModel model, MigrationCommandListBuilder builder)
-        {
-            Check.NotNull(operation, nameof(operation));
-            Check.NotNull(builder, nameof(builder));
-
-            if (string.Equals(operation.Name, "DBO", StringComparison.OrdinalIgnoreCase))
-            {
-                return;
-            }
-
-            var stringTypeMapping = Dependencies.TypeMappingSource.GetMapping(typeof(string));
-
-            builder
-                .Append("IF SCHEMA_ID(")
-                .Append(stringTypeMapping.GenerateSqlLiteral(operation.Name))
-                .Append(") IS NULL EXEC(N'CREATE SCHEMA ")
-                .Append(Dependencies.SqlGenerationHelper.DelimitIdentifier(operation.Name))
-                .Append(Dependencies.SqlGenerationHelper.StatementTerminator)
-                .Append("')")
-                .AppendLine(Dependencies.SqlGenerationHelper.StatementTerminator)
-                .EndCommand();
-        }
-
         protected virtual void Generate(
-            [NotNull] OracleCreateUserOperation operation,
-            [CanBeNull] IModel model,
-            [NotNull] MigrationCommandListBuilder builder)
+            OracleCreateUserOperation operation,
+            IModel model,
+            MigrationCommandListBuilder builder)
         {
-            Check.NotNull(operation, nameof(operation));
-            Check.NotNull(builder, nameof(builder));
-
             builder
                 .Append(
                     $@"BEGIN
-                             EXECUTE IMMEDIATE 'CREATE USER {operation.UserName} IDENTIFIED BY {operation.UserName}';
+                             EXECUTE IMMEDIATE 'CREATE USER {operation.UserName} IDENTIFIED BY {operation.Password}';
                              EXECUTE IMMEDIATE 'GRANT DBA TO {operation.UserName}';
                            END;")
                 .EndCommand(suppressTransaction: true);
         }
 
         protected virtual void Generate(
-            [NotNull] OracleDropUserOperation operation,
-            [CanBeNull] IModel model,
-            [NotNull] MigrationCommandListBuilder builder)
+            OracleDropUserOperation operation,
+            IModel model,
+            MigrationCommandListBuilder builder)
         {
-            Check.NotNull(operation, nameof(operation));
-            Check.NotNull(builder, nameof(builder));
-
             builder
                 .Append(
                     $@"BEGIN
@@ -394,14 +350,11 @@ END;";
             => Generate(operation, model, builder, terminate: true);
 
         protected virtual void Generate(
-            [NotNull] DropIndexOperation operation,
-            [CanBeNull] IModel model,
-            [NotNull] MigrationCommandListBuilder builder,
+            DropIndexOperation operation,
+            IModel model,
+            MigrationCommandListBuilder builder,
             bool terminate)
         {
-            Check.NotNull(operation, nameof(operation));
-            Check.NotNull(builder, nameof(builder));
-
             builder
                 .Append("DROP INDEX ")
                 .Append(Dependencies.SqlGenerationHelper.DelimitIdentifier(operation.Name));
@@ -419,9 +372,6 @@ END;";
             IModel model,
             MigrationCommandListBuilder builder)
         {
-            Check.NotNull(operation, nameof(operation));
-            Check.NotNull(builder, nameof(builder));
-
             var qualifiedName = new StringBuilder();
             if (operation.Schema != null)
             {
@@ -448,9 +398,6 @@ END;";
             IModel model,
             MigrationCommandListBuilder builder)
         {
-            Check.NotNull(operation, nameof(operation));
-            Check.NotNull(builder, nameof(builder));
-
             var sqlBuilder = new StringBuilder();
             foreach (var modificationCommand in operation.GenerateModificationCommands(model))
             {
@@ -546,29 +493,24 @@ END;";
         }
 
         protected virtual void ColumnDefinition(
-            [CanBeNull] string schema,
-            [NotNull] string table,
-            [NotNull] string name,
-            [NotNull] Type clrType,
-            [CanBeNull] string type,
-            [CanBeNull] bool? unicode,
-            [CanBeNull] int? maxLength,
-            [CanBeNull] bool? fixedLength,
+            string schema,
+            string table,
+            string name,
+            Type clrType,
+            string type,
+            bool? unicode,
+            int? maxLength,
+            bool? fixedLength,
             bool rowVersion,
             bool nullable,
-            [CanBeNull] object defaultValue,
-            [CanBeNull] string defaultValueSql,
-            [CanBeNull] string computedColumnSql,
+            object defaultValue,
+            string defaultValueSql,
+            string computedColumnSql,
             bool identity,
-            [NotNull] IAnnotatable annotatable,
-            [CanBeNull] IModel model,
-            [NotNull] MigrationCommandListBuilder builder)
+            IAnnotatable annotatable,
+            IModel model,
+            MigrationCommandListBuilder builder)
         {
-            Check.NotEmpty(name, nameof(name));
-            Check.NotNull(clrType, nameof(clrType));
-            Check.NotNull(annotatable, nameof(annotatable));
-            Check.NotNull(builder, nameof(builder));
-
             if (computedColumnSql != null)
             {
                 builder
@@ -605,9 +547,6 @@ END;";
             IModel model,
             MigrationCommandListBuilder builder)
         {
-            Check.NotNull(operation, nameof(operation));
-            Check.NotNull(builder, nameof(builder));
-
             if (operation.Name != null)
             {
                 builder
@@ -644,49 +583,12 @@ END;";
             }
         }
 
-        protected virtual void Rename(
-            [NotNull] string name,
-            [NotNull] string newName,
-            [NotNull] MigrationCommandListBuilder builder) => Rename(name, newName, /*type:*/ null, builder);
-
-        protected virtual void Rename(
-            [NotNull] string name,
-            [NotNull] string newName,
-            [CanBeNull] string type,
-            [NotNull] MigrationCommandListBuilder builder)
-        {
-            Check.NotEmpty(name, nameof(name));
-            Check.NotEmpty(newName, nameof(newName));
-            Check.NotNull(builder, nameof(builder));
-
-            var stringTypeMapping = Dependencies.TypeMappingSource.GetMapping(typeof(string));
-
-            builder
-                .Append("EXEC sp_rename ")
-                .Append(stringTypeMapping.GenerateSqlLiteral(name))
-                .Append(", ")
-                .Append(stringTypeMapping.GenerateSqlLiteral(newName));
-
-            if (type != null)
-            {
-                builder
-                    .Append(", ")
-                    .Append(stringTypeMapping.GenerateSqlLiteral(type));
-            }
-
-            builder.AppendLine(Dependencies.SqlGenerationHelper.StatementTerminator);
-        }
-
         protected virtual void DropDefaultConstraint(
-            [CanBeNull] string schema,
-            [NotNull] string tableName,
-            [NotNull] string columnName,
-            [NotNull] MigrationCommandListBuilder builder)
+            string schema,
+            string tableName,
+            string columnName,
+            MigrationCommandListBuilder builder)
         {
-            Check.NotEmpty(tableName, nameof(tableName));
-            Check.NotEmpty(columnName, nameof(columnName));
-            Check.NotNull(builder, nameof(builder));
-
             builder
                 .Append("ALTER TABLE ")
                 .Append(Dependencies.SqlGenerationHelper.DelimitIdentifier(tableName, schema))

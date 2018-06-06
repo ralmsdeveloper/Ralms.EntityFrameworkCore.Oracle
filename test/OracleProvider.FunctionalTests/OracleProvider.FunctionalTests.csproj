@@ -5,6 +5,8 @@
     <AssemblyName>Microsoft.EntityFrameworkCore.Oracle.FunctionalTests</AssemblyName>
     <RootNamespace>Microsoft.EntityFrameworkCore</RootNamespace>
     <NoWarn>$(NoWarn);CA1822</NoWarn>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Ralms.EntityFrameworkCore.Oracle.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(FunctionalTests_PackageVersion)' == '2.0.0'">
