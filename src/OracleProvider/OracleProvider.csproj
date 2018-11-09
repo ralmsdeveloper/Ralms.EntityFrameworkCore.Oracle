@@ -7,20 +7,19 @@
     <AssemblyName>Ralms.EntityFrameworkCore.Oracle</AssemblyName>
     <RootNamespace>Ralms.EntityFrameworkCore</RootNamespace>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
-    <PackageTags>EntityFrameworkCore Oralce;Provider Oralce;Oracle;RalmsDeveloper</PackageTags> 
-    <IncludeBuildOutput>false</IncludeBuildOutput> 
-    <CodeAnalysisRuleSet>..\EFCore.ruleset</CodeAnalysisRuleSet> 
-    <Version>2.1-RC1</Version> 
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild> 
-    <PackageIconUrl>http://ralms.net/assets/images/logooracle.png</PackageIconUrl> 
-    <PackageProjectUrl>https://github.com/ralmsdeveloper/Ralms.EntityFrameworkCore.Oracle</PackageProjectUrl> 
-    <RepositoryUrl>https://github.com/ralmsdeveloper/Ralms.EntityFrameworkCore.Oracle</RepositoryUrl> 
-    <RepositoryType>git</RepositoryType> 
-    <PackageReleaseNotes>Oracle Database Provider for the Entity Framework Core.</PackageReleaseNotes> 
-    <Copyright>Rafael Almeida</Copyright> 
-    <Authors>Rafael Almeida</Authors> 
-    <Company>Ralms.net - ralms@ralms.net</Company> 
-    <SignAssembly>true</SignAssembly> 
+    <PackageTags>EntityFrameworkCore Oralce;Provider Oralce;Oracle;RalmsDeveloper</PackageTags>
+    <CodeAnalysisRuleSet>..\EFCore.ruleset</CodeAnalysisRuleSet>
+    <Version>2.1-RC1</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageIconUrl>http://ralms.net/assets/images/logooracle.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/ralmsdeveloper/Ralms.EntityFrameworkCore.Oracle</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ralmsdeveloper/Ralms.EntityFrameworkCore.Oracle</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>Oracle Database Provider for the Entity Framework Core.</PackageReleaseNotes>
+    <Copyright>Rafael Almeida</Copyright>
+    <Authors>Rafael Almeida</Authors>
+    <Company>Ralms.net - ralms@ralms.net</Company>
+    <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Ralms.EntityFrameworkCore.Oracle.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
@@ -36,15 +35,13 @@
 
   <ItemGroup>
     <Compile Include="..\Shared\*.cs" />
-  </ItemGroup> 
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.8.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.1" />
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.12.0-beta2" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.18.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,8 +49,8 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>OracleStrings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup> 
-  
+  </ItemGroup>
+
   <ItemGroup>
     <Compile Update="Properties\OracleStrings.Designer.cs">
       <DesignTime>True</DesignTime>
